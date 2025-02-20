@@ -984,6 +984,467 @@ namespace Demo
 
             #endregion
 
+            #region Part 03 Set Operators[Union Family] - Deferred Execution - [Union() - Concat() - Intersect() - Except() - Distinct()]
+            //Those Operators Are Work On 2 Sequences with same dataType.
+
+            #region 01 - Union
+            ///Produce The Set union of two sequences by using the default equallity comparer of the type.
+            ///Return The new Sequence that contain the elements from both input sequences, exluding duplicates [specify duplicate based on default EquallityComparer of type].
+            ///The Default Equality comparer of ValueTypes -> Compare Based on state(data).
+            ///The Default Equality comparer of ReferenceTypes -> Compare Based on Reference(Address) of the objects.
+            ///If You need to provide new EqualityComparer behaviour to the type, use the second overload of union 
+            ///Union<T>(IEnumerable<T> second, IEqualityComparer<T>? comparer)
+
+            #region 01 Union<T>(IEnumerable<T> second) - Exlude Duplicates based on Default EqualityComparer of sequences Type. 
+
+            #region Example01 - The 2 Sequences are of type valueType <int> - So The Comparing is based on state/Data to specify if the 2 objects are the same
+
+            //List<int> seq01 = Enumerable.Range(0, 10).ToList();//0,1,2,3,4,5,6,7,8,9
+            //List<int> seq02 = Enumerable.Range(5, 10).ToList();//5,6,7,8,9,10,11,12,13,14
+
+            //var result = seq01.Union(seq02);
+
+            //Console.WriteLine(string.Join(", ", result));
+            ////0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 
+
+            #endregion
+
+            #region Example02 - The 2 Sequences are of type ReferenceType <Product> - So The Comparing is based on Reference/Address to specify if the 2 objects are the same
+
+            //List<Product> products01 = new List<Product>()
+            //{
+            //    new Product(){ ProductID = 1, ProductName = "Chai", Category = "XYZ", UnitPrice = 100, UnitsInStock = 11},
+            //    new Product(){ ProductID = 2, ProductName = "Cheese", Category = "ABC", UnitPrice = 150, UnitsInStock = 20},
+            //    new Product(){ ProductID = 3, ProductName = "Panana", Category = "GTY", UnitPrice = 100, UnitsInStock = 140},
+            //    new Product(){ ProductID = 4, ProductName = "Cherry", Category = "CDE", UnitPrice = 100, UnitsInStock = 0}
+            //};
+
+            //List<Product> products02 = new List<Product>()
+            //{
+            //    new Product(){ ProductID = 1, ProductName = "Chai", Category = "XYZ", UnitPrice = 100, UnitsInStock = 11},
+            //    new Product(){ ProductID = 2, ProductName = "Cheese", Category = "ABC", UnitPrice = 150, UnitsInStock = 20},
+            //    new Product(){ ProductID = 3, ProductName = "Panana", Category = "GTY", UnitPrice = 100, UnitsInStock = 140},
+            //    new Product(){ ProductID = 4, ProductName = "Cherry", Category = "CDE", UnitPrice = 100, UnitsInStock = 0}
+            //};
+            ///The 2 sequences contain the objects with the same states but differenct Addresses in heap
+            ///So now when use first overload of  Union<T>(IEnumerable<T> second) that not take parameter of type IEquallityComparer<T> 
+            ///The Compare Equallity betwwen objects will be based on the default Comparer of referenceTypes which is based on Address of objects
+            ///So the result of the Union() here will be new sequence contain 8 product objects.
+            ///
+
+            //var result = products01.Union(products02);
+
+            //foreach (var item in result)
+            //{
+            //    Console.WriteLine(item);
+            //}
+            //// ProductID:1, ProductName:Chai, Category:XYZ, UnitPrice:$100.00, UnitsInStock:11
+            //// ProductID:2, ProductName:Cheese, Category:ABC, UnitPrice:$150.00, UnitsInStock:20
+            //// ProductID:3, ProductName:Panana, Category:GTY, UnitPrice:$100.00, UnitsInStock:140
+            //// ProductID:4, ProductName:Cherry, Category:CDE, UnitPrice:$100.00, UnitsInStock:0
+            //// ProductID:1, ProductName:Chai, Category:XYZ, UnitPrice:$100.00, UnitsInStock:11
+            //// ProductID:2, ProductName:Cheese, Category:ABC, UnitPrice:$150.00, UnitsInStock:20
+            //// ProductID:3, ProductName:Panana, Category:GTY, UnitPrice:$100.00, UnitsInStock:140
+            //// ProductID:4, ProductName:Cherry, Category:CDE, UnitPrice:$100.00, UnitsInStock:0
+
+            #endregion
+
+            #endregion
+
+            #region 02 Union<T>(IEnumerable<T> second, IEquallityComparer<T>? comparer) - Exlude Duplicates based on Specific EqualityComparer.
+
+            #region Example02 - The 2 Sequences are of type ReferenceType <Product> - and The Comparing will be based on specify EquallityComparer - Compare based on objectStates not references.
+
+            //List<Product> products01 = new List<Product>()
+            //{
+            //    new Product(){ ProductID = 1, ProductName = "Chai", Category = "XYZ", UnitPrice = 100, UnitsInStock = 11},
+            //    new Product(){ ProductID = 2, ProductName = "Cheese", Category = "ABC", UnitPrice = 150, UnitsInStock = 20},
+            //    new Product(){ ProductID = 3, ProductName = "Panana", Category = "GTY", UnitPrice = 100, UnitsInStock = 140},
+            //    new Product(){ ProductID = 4, ProductName = "Cherry", Category = "CDE", UnitPrice = 100, UnitsInStock = 0}
+            //};
+
+            //List<Product> products02 = new List<Product>()
+            //{
+            //    new Product(){ ProductID = 1, ProductName = "Chai", Category = "XYZ", UnitPrice = 100, UnitsInStock = 11},
+            //    new Product(){ ProductID = 2, ProductName = "Cheese", Category = "ABC", UnitPrice = 150, UnitsInStock = 20},
+            //    new Product(){ ProductID = 3, ProductName = "Panana", Category = "GTY", UnitPrice = 100, UnitsInStock = 140},
+            //    new Product(){ ProductID = 4, ProductName = "Cherry", Category = "CDE", UnitPrice = 100, UnitsInStock = 0}
+            //};
+            ///The 2 sequences contain the objects with the same states but difference Addresses in heap
+            ///So now when use Second overload of Union<T>(IEnumerable<T> second, IEquallityComparer<T>? comparer) that take parameter of type IEquallityComparer<T> 
+            ///The Compare Equallity between objects will be based on the Specify Comparer of "IEquallityComparer<T>? comparer" which is based on State of objects
+            ///So the result of the Union here will be new sequence contain 4 products objects only
+            ///Because The Second Sequence "seq02" contain the same objects state of "seq01" objects. 
+            ///
+
+            //var result = products01.Union(products02, new ProductEqualityComparer());
+
+            //foreach (var item in result)
+            //{
+            //    Console.WriteLine(item);
+            //}
+            //// ProductID:1, ProductName:Chai, Category:XYZ, UnitPrice:$100.00, UnitsInStock:11
+            //// ProductID:2, ProductName:Cheese, Category:ABC, UnitPrice:$150.00, UnitsInStock:20
+            //// ProductID:3, ProductName:Panana, Category:GTY, UnitPrice:$100.00, UnitsInStock:140
+            //// ProductID:4, ProductName:Cherry, Category:CDE, UnitPrice:$100.00, UnitsInStock:0
+
+            #endregion
+
+            #endregion
+
+            #endregion
+
+            #region 02 - Concat<T>(IEnumerable<T> second)
+            //Concatenates the two sequences in one sequence without ignore duplicates
+            //Returns object of type IEnumerable<out T> That contain the Concatenate elements of the 2 input sequences
+
+            #region Example01 - The 2 Sequences are of type valueType <int>.
+
+            //List<int> seq01 = Enumerable.Range(0, 10).ToList();//0,1,2,3,4,5,6,7,8,9
+            //List<int> seq02 = Enumerable.Range(5, 10).ToList();//5,6,7,8,9,10,11,12,13,14
+
+            //var result = seq01.Concat(seq02);
+
+            //Console.WriteLine(string.Join(", ", result));
+            ////0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
+
+            #endregion
+
+            #region Example02 - The 2 Sequences are of type ReferenceType <Product> .
+
+            //List<Product> products01 = new List<Product>()
+            //{
+            //    new Product(){ ProductID = 1, ProductName = "Chai", Category = "XYZ", UnitPrice = 100, UnitsInStock = 11},
+            //    new Product(){ ProductID = 2, ProductName = "Cheese", Category = "ABC", UnitPrice = 150, UnitsInStock = 20},
+            //    new Product(){ ProductID = 3, ProductName = "Panana", Category = "GTY", UnitPrice = 100, UnitsInStock = 140},
+            //    new Product(){ ProductID = 4, ProductName = "Cherry", Category = "CDE", UnitPrice = 100, UnitsInStock = 0}
+            //};
+
+            //List<Product> products02 = new List<Product>()
+            //{
+            //    new Product(){ ProductID = 1, ProductName = "Chai", Category = "XYZ", UnitPrice = 100, UnitsInStock = 11},
+            //    new Product(){ ProductID = 2, ProductName = "Cheese", Category = "ABC", UnitPrice = 150, UnitsInStock = 20},
+            //    new Product(){ ProductID = 3, ProductName = "Panana", Category = "GTY", UnitPrice = 100, UnitsInStock = 140},
+            //    new Product(){ ProductID = 4, ProductName = "Cherry", Category = "CDE", UnitPrice = 100, UnitsInStock = 0}
+            //};
+
+            //var result = products01.Concat(products02);
+
+            //foreach (var item in result)
+            //{
+            //    Console.WriteLine(item);
+            //}
+            //// ProductID:1, ProductName:Chai, Category:XYZ, UnitPrice:$100.00, UnitsInStock:11
+            //// ProductID:2, ProductName:Cheese, Category:ABC, UnitPrice:$150.00, UnitsInStock:20
+            //// ProductID:3, ProductName:Panana, Category:GTY, UnitPrice:$100.00, UnitsInStock:140
+            //// ProductID:4, ProductName:Cherry, Category:CDE, UnitPrice:$100.00, UnitsInStock:0
+            //// ProductID:1, ProductName:Chai, Category:XYZ, UnitPrice:$100.00, UnitsInStock:11
+            //// ProductID:2, ProductName:Cheese, Category:ABC, UnitPrice:$150.00, UnitsInStock:20
+            //// ProductID:3, ProductName:Panana, Category:GTY, UnitPrice:$100.00, UnitsInStock:140
+            //// ProductID:4, ProductName:Cherry, Category:CDE, UnitPrice:$100.00, UnitsInStock:0
+
+            #endregion
+
+            #endregion
+
+            #region 03 - Intersect
+            ///Produce The set intersection of two sequences by using the default equality comparer to compare elements.
+            ///Return The new Sequence that contain the Intersection Elements of both input sequences [specify Intersect based on default EquallityComparer of type].
+            ///The Default Equality comparer of ValueTypes -> Compare Based on state(data).
+            ///The Default Equality comparer of ReferenceTypes -> Compare Based on Reference(Address) of the objects.
+            ///If You need to provide new EqualityComparer behaviour to the type, use the second overload of Intersect 
+            ///intersect<T>(IEnumerable<T> second, IEqualityComparer<T>? comparer)
+
+            #region 01 Intersect<T>(IEnumerable<T> second) - Return Intersection Elements based on Default EqualityComparer of sequences Type. 
+
+            #region Example01 - The 2 Sequences are of type valueType <int> - So The Comparing is based on state/Data to specify if the 2 objects are the same
+
+            //List<int> seq01 = Enumerable.Range(0, 10).ToList();//0,1,2,3,4,5,6,7,8,9
+            //List<int> seq02 = Enumerable.Range(5, 10).ToList();//5,6,7,8,9,10,11,12,13,14
+
+            //var result = seq01.Intersect(seq02);
+
+            //Console.WriteLine(string.Join(", ", result));
+            ////5, 6, 7, 8, 9
+
+            #endregion
+
+            #region Example02 - The 2 Sequences are of type ReferenceType <Product> - So The Comparing is based on Reference/Address to specify if the 2 objects are the same
+
+            //List<Product> products01 = new List<Product>()
+            //{
+            //    new Product(){ ProductID = 1, ProductName = "Chai", Category = "XYZ", UnitPrice = 100, UnitsInStock = 11},
+            //    new Product(){ ProductID = 2, ProductName = "Cheese", Category = "ABC", UnitPrice = 150, UnitsInStock = 20},
+            //    new Product(){ ProductID = 3, ProductName = "Panana", Category = "GTY", UnitPrice = 100, UnitsInStock = 140},
+            //    new Product(){ ProductID = 4, ProductName = "Cherry", Category = "CDE", UnitPrice = 100, UnitsInStock = 0}
+            //};
+
+            //List<Product> products02 = new List<Product>()
+            //{
+            //    new Product(){ ProductID = 1, ProductName = "Chai", Category = "XYZ", UnitPrice = 100, UnitsInStock = 11},
+            //    new Product(){ ProductID = 2, ProductName = "Cheese", Category = "ABC", UnitPrice = 150, UnitsInStock = 20},
+            //    new Product(){ ProductID = 3, ProductName = "Panana", Category = "GTY", UnitPrice = 100, UnitsInStock = 140},
+            //    new Product(){ ProductID = 4, ProductName = "Cherry", Category = "CDE", UnitPrice = 100, UnitsInStock = 0}
+            //};
+            ///The 2 sequences contain the objects with the same states but differenct Addresses in heap
+            ///So now when use first overload of  Intersect<T>(IEnumerable<T> second) that not take parameter of type IEquallityComparer<T> 
+            ///The Compare Equallity between objects will be based on the default Comparer of referenceTypes which is based on Address of objects
+            ///So the result of the Intersect here will be new sequence contain 0 product objects
+            ///because it found that there are no object has the same address like another object in second sequence to return it.
+            ///
+
+            //var result = products01.Intersect(products02);
+
+            //foreach (var item in result)
+            //{
+            //    Console.WriteLine(item);//Nothing
+            //}
+
+            #endregion
+
+            #endregion
+
+            #region 02 Intersect<T>(IEnumerable<T> second, IEquallityComparer<T>? comparer) - Return Intersected Elements based on Specific EqualityComparer.
+
+            #region Example02 - The 2 Sequences are of type ReferenceType <Product> - and The Comparing will be based on specify EquallityComparer - Compare based on objectStates not references.
+
+            //List<Product> products01 = new List<Product>()
+            //{
+            //    new Product(){ ProductID = 1, ProductName = "Chai", Category = "XYZ", UnitPrice = 100, UnitsInStock = 11},
+            //    new Product(){ ProductID = 2, ProductName = "Cheese", Category = "ABC", UnitPrice = 150, UnitsInStock = 20},
+            //    new Product(){ ProductID = 3, ProductName = "Panana", Category = "GTY", UnitPrice = 100, UnitsInStock = 140},
+            //    new Product(){ ProductID = 4, ProductName = "Cherry", Category = "CDE", UnitPrice = 100, UnitsInStock = 0}
+            //};
+
+            //List<Product> products02 = new List<Product>()
+            //{
+            //    new Product(){ ProductID = 1, ProductName = "Chai", Category = "XYZ", UnitPrice = 100, UnitsInStock = 11},
+            //    new Product(){ ProductID = 2, ProductName = "Cheese", Category = "ABC", UnitPrice = 150, UnitsInStock = 20},
+            //    new Product(){ ProductID = 3, ProductName = "Panana", Category = "GTY", UnitPrice = 100, UnitsInStock = 140},
+            //    new Product(){ ProductID = 4, ProductName = "Cherry", Category = "CDE", UnitPrice = 100, UnitsInStock = 0}
+            //};
+            ///The 2 sequences contain the objects with the same states but difference Addresses in heap
+            ///So now when use Second overload of Intersect<T>(IEnumerable<T> second, IEquallityComparer<T>? comparer) that take parameter of type IEquallityComparer<T> 
+            ///The Compare Equallity between objects will be based on the Specify Comparer of "IEquallityComparer<T>? comparer" which is based on State of objects
+            ///So the result of the Union here will be new sequence contain 4 products objects
+            ///Because Those Are The objects which are founded in the 2 sequence with same state.
+            ///
+
+            //var result = products01.Intersect(products02, new ProductEqualityComparer());
+
+            //foreach (var item in result)
+            //{
+            //    Console.WriteLine(item);
+            //}
+            //// ProductID:1, ProductName:Chai, Category:XYZ, UnitPrice:$100.00, UnitsInStock:11
+            //// ProductID:2, ProductName:Cheese, Category:ABC, UnitPrice:$150.00, UnitsInStock:20
+            //// ProductID:3, ProductName:Panana, Category:GTY, UnitPrice:$100.00, UnitsInStock:140
+            //// ProductID:4, ProductName:Cherry, Category:CDE, UnitPrice:$100.00, UnitsInStock:0
+
+            #endregion
+
+            #endregion
+
+            #endregion
+
+            #region 04 - Except
+            ///Produce The set Difference of two sequences by using the default equality comparer to compare elements.
+            ///Return The new Sequence that contain the set Elements that found in ("seq01" => Caller of LinQ method Except()) and not founded in ("seq02" => Parameter of LinQ method Except()) [specify Difference based on default EquallityComparer of type].
+            ///The Default Equality comparer of ValueTypes -> Compare Based on state(data).
+            ///The Default Equality comparer of ReferenceTypes -> Compare Based on Reference(Address) of the objects.
+            ///If You need to provide new EqualityComparer behaviour to the type, use the second overload of Intersect 
+            ///Except<T>(IEnumerable<T> second, IEqualityComparer<T>? comparer)
+
+            #region 01 Except<T>(IEnumerable<T> second) - Return Differnce Elements That found in first sequence and not founded in second sequence based on Default EqualityComparer of sequences Type. 
+
+            #region Example01 - The 2 Sequences are of type valueType <int> - So The Comparing is based on state/Data to specify if the 2 objects are the same to return elements found in "seq01" and not in "seq02"
+
+            //List<int> seq01 = Enumerable.Range(0, 10).ToList();//0,1,2,3,4,5,6,7,8,9
+            //List<int> seq02 = Enumerable.Range(5, 10).ToList();//5,6,7,8,9,10,11,12,13,14
+
+            //var result = seq01.Except(seq02);
+
+            //Console.WriteLine(string.Join(", ", result));
+            ////0, 1, 2, 3, 4
+
+            #endregion
+
+            #region Example02 - The 2 Sequences are of type ReferenceType <Product> - So The Comparing is based on Reference/Address to specify if the 2 objects are the same to return elements found in "seq01" and not in "seq02"
+
+            //List<Product> products01 = new List<Product>()
+            //{
+            //    new Product(){ ProductID = 1, ProductName = "Chai", Category = "XYZ", UnitPrice = 100, UnitsInStock = 11},
+            //    new Product(){ ProductID = 2, ProductName = "Cheese", Category = "ABC", UnitPrice = 150, UnitsInStock = 20},
+            //    new Product(){ ProductID = 3, ProductName = "Panana", Category = "GTY", UnitPrice = 100, UnitsInStock = 140},
+            //    new Product(){ ProductID = 4, ProductName = "Cherry", Category = "CDE", UnitPrice = 100, UnitsInStock = 0}
+            //};
+
+            //List<Product> products02 = new List<Product>()
+            //{
+            //    new Product(){ ProductID = 1, ProductName = "Chai", Category = "XYZ", UnitPrice = 100, UnitsInStock = 11},
+            //    new Product(){ ProductID = 2, ProductName = "Cheese", Category = "ABC", UnitPrice = 150, UnitsInStock = 20},
+            //    new Product(){ ProductID = 3, ProductName = "Panana", Category = "GTY", UnitPrice = 100, UnitsInStock = 140},
+            //    new Product(){ ProductID = 4, ProductName = "Cherry", Category = "CDE", UnitPrice = 100, UnitsInStock = 0}
+            //};
+            ///The 2 sequences contain the objects with the same states but differenct Addresses in heap
+            ///So now when use first overload of  Except<T>(IEnumerable<T> second) that not take parameter of type IEquallityComparer<T> 
+            ///The Compare Equallity between objects will be based on the default Comparer of referenceTypes which is based on Address of objects
+            ///So the result of the Except here will be new sequence contain 4 product objects
+            ///because it found that there are 4 object in "seq01" with address not like any addressed of objects in second sequence "seq02".
+            ///
+
+            //var result = products01.Except(products02);
+
+            //foreach (var item in result)
+            //{
+            //    Console.WriteLine(item);//Nothing
+            //}
+            //// ProductID:1, ProductName:Chai, Category:XYZ, UnitPrice:$100.00, UnitsInStock:11
+            //// ProductID:2, ProductName:Cheese, Category:ABC, UnitPrice:$150.00, UnitsInStock:20
+            //// ProductID:3, ProductName:Panana, Category:GTY, UnitPrice:$100.00, UnitsInStock:140
+            //// ProductID:4, ProductName:Cherry, Category:CDE, UnitPrice:$100.00, UnitsInStock:0
+
+            #endregion
+
+            #endregion
+
+            #region 02 Except<T>(IEnumerable<T> second, IEquallityComparer<T>? comparer) - Return Difference Elements based on Specific EqualityComparer.
+
+            #region Example02 - The 2 Sequences are of type ReferenceType <Product> - and The Comparing will be based on specify EquallityComparer - Compare based on objectStates not references.
+
+            //List<Product> products01 = new List<Product>()
+            //{
+            //    new Product(){ ProductID = 1, ProductName = "Chai", Category = "XYZ", UnitPrice = 100, UnitsInStock = 11},
+            //    new Product(){ ProductID = 2, ProductName = "Cheese", Category = "ABC", UnitPrice = 150, UnitsInStock = 20},
+            //    new Product(){ ProductID = 3, ProductName = "Panana", Category = "GTY", UnitPrice = 100, UnitsInStock = 140},
+            //    new Product(){ ProductID = 4, ProductName = "Cherry", Category = "CDE", UnitPrice = 100, UnitsInStock = 0}
+            //};
+
+            //List<Product> products02 = new List<Product>()
+            //{
+            //    new Product(){ ProductID = 1, ProductName = "Chai", Category = "XYZ", UnitPrice = 100, UnitsInStock = 11},
+            //    new Product(){ ProductID = 2, ProductName = "Cheese", Category = "ABC", UnitPrice = 150, UnitsInStock = 20},
+            //    new Product(){ ProductID = 3, ProductName = "Panana", Category = "GTY", UnitPrice = 100, UnitsInStock = 140},
+            //    new Product(){ ProductID = 4, ProductName = "Cherry", Category = "CDE", UnitPrice = 100, UnitsInStock = 0}
+            //};
+            ///The 2 sequences contain the objects with the same states but difference Addresses in heap
+            ///So now when use Second overload of Except<T>(IEnumerable<T> second, IEquallityComparer<T>? comparer) that take parameter of type IEquallityComparer<T> 
+            ///The Compare Equallity between objects will be based on the Specify Comparer of "IEquallityComparer<T>? comparer" which is based on State of objects
+            ///So the result of the Except here will be new sequence contain 0 products objects
+            ///Because We need To return only objects found in first sequence and not found in second sequence
+            ///And the first sequence and second sequence contain the same objects with same state, and we compare based on state, we return difference based on state of objects.
+            ///
+
+            //var result = products01.Except(products02, new ProductEqualityComparer());
+
+            //foreach (var item in result)
+            //{
+            //    Console.WriteLine(item);//Nothing
+            //}
+
+            #endregion
+
+            #endregion
+
+            #endregion
+
+            #region 05 - Distinct
+            //Return Distinct Elements from a sequence by using the default equality comparer to compare sequence elements.
+            //Return IEnumerable<out T> that contain distinct elements of the source sequence without duplicates.
+
+            #region 01 Distinct<T>()
+
+            #region Example01 - The Sequence is of type valueType <int> - So The Comparing between sequence elements to found the duplicates will be based on state.
+
+            //List<int> seq01 = new List<int>() { 1, 1, 2, 2, 3, 3, 4, 5, 8, 9, 9, 7, 1, 6 };
+            //var result = seq01.Distinct();
+
+            //Console.WriteLine(string.Join(", ", result));
+            ////1, 2, 3, 4, 5, 8, 9, 7, 6
+
+            #endregion
+
+            #region Example02 - The 2 Sequences are of type ReferenceType <Product> -So The Comparing between sequence elements to found the duplicates will be based on Reference/Address of sequence objects.
+
+            //List<Product> products01 = new List<Product>()
+            //{
+            //    new Product(){ ProductID = 1, ProductName = "Chai", Category = "XYZ", UnitPrice = 100, UnitsInStock = 11},
+            //    new Product(){ ProductID = 1, ProductName = "Chai", Category = "XYZ", UnitPrice = 100, UnitsInStock = 11},
+            //    new Product(){ ProductID = 2, ProductName = "Cheese", Category = "ABC", UnitPrice = 150, UnitsInStock = 20},
+            //    new Product(){ ProductID = 2, ProductName = "Cheese", Category = "ABC", UnitPrice = 150, UnitsInStock = 20},
+            //    new Product(){ ProductID = 3, ProductName = "Panana", Category = "GTY", UnitPrice = 100, UnitsInStock = 140},
+            //    new Product(){ ProductID = 3, ProductName = "Panana", Category = "GTY", UnitPrice = 100, UnitsInStock = 140},
+            //    new Product(){ ProductID = 4, ProductName = "Cherry", Category = "CDE", UnitPrice = 100, UnitsInStock = 0},
+            //    new Product(){ ProductID = 4, ProductName = "Cherry", Category = "CDE", UnitPrice = 100, UnitsInStock = 0}
+            //};
+            ///The sequence contain objects with the same states but differenct Addresses in heap
+            ///So now when use first overload of  Distinct<T>() that not take parameter of type IEquallityComparer<T> 
+            ///The Compare Equallity between sequence objects will be based on the default Comparer of referenceTypes which is based on Address of objects
+            ///So the result of the Distinct here will be new sequence contain 8 product objects [With Duplicate State Objects]
+            ///Because it deal with sequence objects as different objects because they have different addresses [But there are objects duplicated that has the same state].
+            ///
+
+            //var result = products01.Distinct();
+
+            //foreach (var item in result)
+            //{
+            //    Console.WriteLine(item);
+            //}
+            //// ProductID:1, ProductName:Chai, Category:XYZ, UnitPrice:$100.00, UnitsInStock:11
+            //// ProductID:1, ProductName:Chai, Category:XYZ, UnitPrice:$100.00, UnitsInStock:11
+            //// ProductID:2, ProductName:Cheese, Category:ABC, UnitPrice:$150.00, UnitsInStock:20
+            //// ProductID:2, ProductName:Cheese, Category:ABC, UnitPrice:$150.00, UnitsInStock:20
+            //// ProductID:3, ProductName:Panana, Category:GTY, UnitPrice:$100.00, UnitsInStock:140
+            //// ProductID:3, ProductName:Panana, Category:GTY, UnitPrice:$100.00, UnitsInStock:140
+            //// ProductID:4, ProductName:Cherry, Category:CDE, UnitPrice:$100.00, UnitsInStock:0
+            //// ProductID:4, ProductName:Cherry, Category:CDE, UnitPrice:$100.00, UnitsInStock:0
+
+            #endregion
+
+            #endregion
+
+            #region 02 Distinct<T>(IEquallityComparer<T>? comparer) - Return new sequence with distinct elements of source sequence based on Specific EqualityComparer.
+
+            #region Example02 - The 2 Sequences are of type ReferenceType <Product> - and The Comparing will be based on specify EquallityComparer - Compare based on objectStates not references.
+
+
+            //List<Product> products01 = new List<Product>()
+            //{
+            //    new Product(){ ProductID = 1, ProductName = "Chai", Category = "XYZ", UnitPrice = 100, UnitsInStock = 11},
+            //    new Product(){ ProductID = 1, ProductName = "Chai", Category = "XYZ", UnitPrice = 100, UnitsInStock = 11},
+            //    new Product(){ ProductID = 2, ProductName = "Cheese", Category = "ABC", UnitPrice = 150, UnitsInStock = 20},
+            //    new Product(){ ProductID = 2, ProductName = "Cheese", Category = "ABC", UnitPrice = 150, UnitsInStock = 20},
+            //    new Product(){ ProductID = 3, ProductName = "Panana", Category = "GTY", UnitPrice = 100, UnitsInStock = 140},
+            //    new Product(){ ProductID = 3, ProductName = "Panana", Category = "GTY", UnitPrice = 100, UnitsInStock = 140},
+            //    new Product(){ ProductID = 4, ProductName = "Cherry", Category = "CDE", UnitPrice = 100, UnitsInStock = 0},
+            //    new Product(){ ProductID = 4, ProductName = "Cherry", Category = "CDE", UnitPrice = 100, UnitsInStock = 0}
+            //};
+            ///The sequence contain objects with the same states but differenct Addresses in heap
+            ///So now when use first overload of  Distinct<T>(IEqualityComparer<T>? comparer) that take parameter of type IEquallityComparer<T> 
+            ///The Compare Equallity between sequence objects will be based on the Specific Comparer based on State of objects not address.
+            ///So the result of the Distinct here will be new sequence contain only 4 product objects [Without Duplicate State Objects]
+            ///Because it deal with sequence objects as same objects because they have same state [But different addresses].
+            ///
+
+            //var result = products01.Distinct( new ProductEqualityComparer());
+
+            //foreach (var item in result)
+            //{
+            //    Console.WriteLine(item);
+            //}
+            //// ProductID:1, ProductName:Chai, Category:XYZ, UnitPrice:$100.00, UnitsInStock:11
+            //// ProductID:2, ProductName:Cheese, Category:ABC, UnitPrice:$150.00, UnitsInStock:20
+            //// ProductID:3, ProductName:Panana, Category:GTY, UnitPrice:$100.00, UnitsInStock:140
+            //// ProductID:4, ProductName:Cherry, Category:CDE, UnitPrice:$100.00, UnitsInStock:0
+
+            #endregion
+
+            #endregion
+
+            #endregion
+
+            #endregion
+
         }
     }
 }
