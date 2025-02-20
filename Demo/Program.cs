@@ -896,6 +896,94 @@ namespace Demo
 
             #endregion
 
+            #region Part 02 Generation Operators  - Deferred Execution - [Range() - Repeat() - Empty<T>()]
+            //Valid Only With Fluent Syntax 
+            //The Only Way To Call Those Generation LinQ operators is as static method - Throw Class Enumerable - Enumerable.LinQMethod(). 
+
+            #region 01 - Range(int start, int count)
+            ////Generate a sequence of integral numbers within a specific range
+            ////Return IEnumerable<int> object that contain the range of sequential integral numbers.
+
+            //var result = Enumerable.Range(0, 100);//start generate numbers from number 0 and generate 100 number.
+
+            //Console.WriteLine(string.Join(", ", result));// 0 - 99  [100 number].
+
+            #endregion
+
+            #region 02 - Repeat<T>(T element,int count)
+            ////Generate a sequence/object that contain one element repeated count numbers. 
+            ////Return IEnumerable<out T> object that contain the a repeated element.
+
+            //var result = Enumerable.Repeat("Eslam", 5);
+
+            //Console.WriteLine(string.Join(", ", result));// Eslam, Eslam, Eslam, Eslam, Eslam
+
+            //var result02 = Enumerable.Repeat(new Product() { ProductID = 1, ProductName = "Chai", Category = "XYZ", UnitPrice = 100, UnitsInStock = 11}, 6);
+
+            //foreach (var item in result02)
+            //{
+            //    Console.WriteLine(item);
+            //}
+
+            //// ProductID:1, ProductName:Chai, Category:XYZ, UnitPrice:$100.00, UnitsInStock:11
+            //// ProductID:1, ProductName:Chai, Category:XYZ, UnitPrice:$100.00, UnitsInStock:11
+            //// ProductID:1, ProductName:Chai, Category:XYZ, UnitPrice:$100.00, UnitsInStock:11
+            //// ProductID:1, ProductName:Chai, Category:XYZ, UnitPrice:$100.00, UnitsInStock:11
+            //// ProductID:1, ProductName:Chai, Category:XYZ, UnitPrice:$100.00, UnitsInStock:11
+            //// ProductID:1, ProductName:Chai, Category:XYZ, UnitPrice:$100.00, UnitsInStock:11
+
+            #endregion
+
+            #region 03 - Empty<T>()
+            //Returns an empty IEnumerable<out T> object. 
+
+            #region Example01 - var result = Enumerable.Empty<Product>();
+
+            //var result = Enumerable.Empty<Product>();
+            ////result now refer to nothing
+
+            //foreach (var item in result)
+            //{
+            //    Console.WriteLine(item);//Print Nothing.
+            //} 
+
+            #endregion
+
+            #region Example02 - Product[] products = new Product[0];
+
+            ////Previous Example Like Initialize reference of type Product[] and let it refer to empty object that contain 0 product object. 
+            //Product[] products = new Product[0];
+            //foreach (var item in products)
+            //{
+            //    Console.WriteLine(item);//Print Nothing
+            //} 
+
+            #endregion
+
+            #region Example03 - List<Product> products = new List<Product>();
+
+            ////This Example Like The Example01.
+
+            //List<Product> products = new List<Product>();
+            //foreach (var item in products)
+            //{
+            //    Console.WriteLine(item);//print Nothing
+            //}
+
+            #endregion
+
+            #region Example04 - var result02 = new Product();
+
+            //var result02 = new Product();//Make New object of type product and initialize it's properties with default value of the type.
+            //Console.WriteLine(result02);//Print state of the product that initialized with default value.
+            //                            //ProductID:0, ProductName:, Category:, UnitPrice:$0.00, UnitsInStock:0
+
+            #endregion
+
+            #endregion
+
+            #endregion
+
         }
     }
 }
