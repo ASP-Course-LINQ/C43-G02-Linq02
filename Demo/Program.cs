@@ -1,4 +1,6 @@
-﻿using static Demo.ListGenerator;
+﻿using System.Collections;
+using System.IO;
+using static Demo.ListGenerator;
 namespace Demo
 {
     internal class Program
@@ -756,6 +758,139 @@ namespace Demo
             ///3rd -> ("Eslam Ashraf Abdelazem", "Mohamed") => Eslam Ashraf Abdelazem Mohamed
 
             //Console.WriteLine(result);//Eslam Ashraf Abdelazem Mohamed
+
+            #endregion
+
+            #endregion
+
+            #region Part 01 Casting[Conversion] Operators - Immediate Execution - [ToList() - ToArray() - ToDictionary() - OfType<T>()]
+            //ToList() => Return A new List<T> object of The Source sequence elements.
+            //ToArray() => Return A new object of type Array<T> contain The Source sequence elements.
+            //ToDictionary() => Return A new object of type Dictionary<TKey,TValue> Contain The Source sequence elements (Dictionary<TKey,TValue> dictionary)
+            //ToHashSet() => Return A new object of type HashSet<T> Contain The Source Sequence Elements.
+            #region 01 - ToList<T>()
+            ////ToList() => Return A new object of Type List<T> contain The Source sequence elements.
+
+            //List<Product> result = ProductsList.Where(Product => Product.UnitsInStock == 0).ToList();
+
+            //foreach (var item in result)
+            //{
+            //    Console.WriteLine(item);
+            //}
+
+            #endregion
+
+            #region 02 - ToArray<T>()
+            ////ToArray() => Return A new object of type Array<T> contain The Source sequence elements.
+
+            //Product[] productsArr = ProductsList.Where(Product => Product.UnitsInStock == 0).ToArray();
+
+            //foreach (var item in productsArr)
+            //{
+            //    Console.WriteLine(item);
+            //}
+
+            #endregion
+
+            #region 03 - ToDictionary
+
+            #region 03.1 ToDictionary<TKey,TValue>(Func<T,TKey> keySelector)
+
+            ////ToDictionary<TKey,TValue>(Func<T,TKey> keySelector) => Return A new object of type Dictionary<TKey,TValue> Contain The Source sequence elements (Dictionary<TKey,TValue>dictionary)
+            ////                                                                                                              // Specify the Key here, and value specified as Product object.
+            //Dictionary<long, Product> productsWithID = ProductsList.Where(product => product.UnitsInStock == 0).ToDictionary(product => product.ProductID);
+            ///Dictionary is Generic collection store items as Key Value Pairs for each item, deal with Two generic types
+            ///Tkey -> Represent The Type of the Key [long] - mean the key will be the ProductId which is of type long.
+            ///TValue -> Represent The Type of the Value [Product] mean the value will be the Product object itself which is of type Product.
+
+            ////product.productId => Key , product object itself => value
+
+            //foreach (var item in productsWithID)
+            //{
+            //    Console.WriteLine($"Key: {item.Key} => Value: {item.Value}");
+            //}
+            //// Key: 5  => Value: ProductID:5, ProductName:Chef Anton's Gumbo Mix, CategoryCondiments, UnitPrice:$21.35, UnitsInStock:0
+            //// Key: 17 => Value: ProductID:17, ProductName:Alice Mutton, CategoryMeat/Poultry, UnitPrice:$39.00, UnitsInStock:0
+            //// Key: 29 => Value: ProductID:29, ProductName:Thüringer Rostbratwurst, CategoryMeat/Poultry, UnitPrice:$123.79, UnitsInStock:0
+            //// Key: 31 => Value: ProductID:31, ProductName:Gorgonzola Telino, CategoryDairy Products, UnitPrice:$12.50, UnitsInStock:0
+            //// Key: 53 => Value: ProductID:53, ProductName:Perth Pasties, CategoryMeat/Poultry, UnitPrice:$32.80, UnitsInStock:0
+
+            #endregion
+
+            #region 03.2 ToDictionary<TKey,TValue>(Func<T,TKey> keySelector, Func<T,TValue> valueSelector)
+
+            //Dictionary<long, string> products = ProductsList.Where(product => product.UnitsInStock == 0).ToDictionary(product => product.ProductID,product => product.ProductName);
+
+            ////product.productId => Key , product.productName => value
+
+            //foreach (var item in products)
+            //{
+            //    Console.WriteLine($"Key: {item.Key} => Value: {item.Value}");
+            //}
+            ////Key: 5 => Value: Chef Anton's Gumbo Mix
+            ////Key: 17 => Value: Alice Mutton
+            ////Key: 29 => Value: Thüringer Rostbratwurst
+            ////Key: 31 => Value: Gorgonzola Telino
+            ////Key: 53 => Value: Perth Pasties
+
+            #endregion
+
+            #endregion
+
+            #region 04 - ToHashSet<T>()
+
+            //HashSet<Product> products = ProductsList.Where(product => product.UnitsInStock == 0).ToHashSet();
+
+            //foreach (var item in products)
+            //{
+            //    Console.WriteLine(item);
+            //}
+
+            //// ProductID:5, ProductName:Chef Anton's Gumbo Mix, CategoryCondiments, UnitPrice:$21.35, UnitsInStock:0
+            //// ProductID:17, ProductName:Alice Mutton, CategoryMeat/Poultry, UnitPrice:$39.00, UnitsInStock:0
+            //// ProductID:29, ProductName:Thüringer Rostbratwurst, CategoryMeat/Poultry, UnitPrice:$123.79, UnitsInStock:0
+            //// ProductID:31, ProductName:Gorgonzola Telino, CategoryDairy Products, UnitPrice:$12.50, UnitsInStock:0
+            //// ProductID:53, ProductName:Perth Pasties, CategoryMeat/Poultry, UnitPrice:$32.80, UnitsInStock:0
+
+            #endregion
+
+            #region 05 - OfType<T>()
+            ////Return A new object that contain elements of specific type only <T> and another elements in the source sequence will ignored.
+
+            //ArrayList arrayList = new ArrayList()
+            //{
+            //    "Eslam",
+            //    "omar",
+            //    "Ahmed",
+            //    "Mona",
+            //    "Aliaa",
+            //    1,
+            //    2,
+            //    3,
+            //    4,
+            //    5,
+            //    1.5m,
+            //    2.5m,
+            //    3.5m,
+            //    4.5m,
+            //    5.5m,
+            //    true,
+            //    true,
+            //    false,
+            //    false
+
+            //};
+
+            //var stringresult = arrayList.OfType<string>();
+            //var Intresult = arrayList.OfType<int>();
+            //var decimalresult = arrayList.OfType<decimal>();
+            //var boolresult = arrayList.OfType<bool>();
+
+            //Console.WriteLine(string.Join(", ", stringresult));//  Eslam, omar, Ahmed, Mona, Aliaa
+            //Console.WriteLine(string.Join(", ", Intresult));//     1, 2, 3, 4, 5
+            //Console.WriteLine(string.Join(", ", decimalresult));// 1.5, 2.5, 3.5, 4.5, 5.5
+            //Console.WriteLine(string.Join(", ", boolresult));//    True, True, False, False
+
 
             #endregion
 
