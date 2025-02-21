@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Channels;
 using static Assignment.ListGenerator;
 namespace Assignment
@@ -323,6 +324,79 @@ namespace Assignment
             #endregion
 
             #endregion
+
+            #region Part04 - Quantifiers Operators
+
+            #region P04|Q01 - Determine if any of the words in dictionary_english.txt (Read dictionary_english.txt into Array of String First) contain the substring 'ei'.
+
+            //string[] txtFile = File.ReadAllLines("dictionary_english.txt");
+
+            //var result = txtFile.Any(p => p.Contains("ei"));
+            //Console.WriteLine(result);//True
+
+            //var result02 = from txt in txtFile
+            //               where txt.Contains("ei")
+            //               select txt;
+
+            //foreach (var item in result02)
+            //{
+            //    Console.WriteLine(item);
+            //}
+
+            #endregion
+
+            #region *P04|Q02 - Return a grouped a list of products only for categories that have at least one product that is out of stock.
+
+            // var categoriesWithOutOfStockProducts = ProductsList
+            //.Where(p => p.UnitsInStock == 0) // Filter products that are out of stock
+            //.Select(p => p.Category) // Select their categories
+            //.Distinct(); // Get distinct categories
+
+            // // Group products by category for categories that have at least one out-of-stock product
+            // var groupedProducts = ProductsList
+            //     .Where(p => categoriesWithOutOfStockProducts.Contains(p.Category)) // Filter products in those categories
+            //     .GroupBy(p => p.Category); // Group by category
+
+            // // Print the grouped products
+            // foreach (var group in groupedProducts)
+            // {
+            //     Console.WriteLine($"Category: {group.Key}");
+            //     foreach (var product in group)
+            //     {
+            //         Console.WriteLine($"  Product: {product.ProductName}, Units In Stock: {product.UnitsInStock}, Price: {product.UnitPrice}");
+            //     }
+            //     Console.WriteLine();
+            // }
+
+            #endregion
+
+            #region *P04|Q03 - Return a grouped a list of products only for categories that have all of their products in stock.
+
+            //var categoriesWithAllInStock = ProductsList
+            //.GroupBy(p => p.Category) // Group products by category
+            //.Where(g => g.All(p => p.UnitsInStock > 0)) // Filter categories where all products are in stock
+            //.Select(g => g.Key); // Select the category names
+
+            //// Group products by category for categories where all products are in stock
+            //var groupedProducts = ProductsList
+            //    .Where(p => categoriesWithAllInStock.Contains(p.Category)) // Filter products in those categories
+            //    .GroupBy(p => p.Category); // Group by category
+
+            //// Print the grouped products
+            //foreach (var group in groupedProducts)
+            //{
+            //    Console.WriteLine($"Category: {group.Key}");
+            //    foreach (var product in group)
+            //    {
+            //        Console.WriteLine($"  Product: {product.ProductName}, Units In Stock: {product.UnitsInStock}, Price: {product.UnitPrice}");
+            //    }
+            //    Console.WriteLine();
+            //}
+
+            #endregion
+
+            #endregion
+
 
         }
     }
