@@ -309,7 +309,7 @@ namespace Assignment
             #endregion
 
             #region P03|Q05 - Create one sequence that contains the last Three Characters in each name of all customers and products, including any duplicates
-            
+
             //var productNames = ProductsList.Select(p => p.ProductName.Substring(p.ProductName.Length - 3));
             //var customerNames = CustomersList.Select(c => c.CustomerName.Substring(c.CustomerName.Length - 3));
 
