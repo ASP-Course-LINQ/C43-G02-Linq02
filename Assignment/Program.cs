@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Channels;
 using static Assignment.ListGenerator;
 namespace Assignment
 {
@@ -134,6 +135,7 @@ namespace Assignment
 
             #region P02|Q09 - Get the total units in stock for each product category.
 
+            ////Fluent Syntax
             //var result = ProductsList.Select(p => p.Category).Distinct()
             //                         .Select(c => new
             //                         {
@@ -144,6 +146,21 @@ namespace Assignment
 
 
             //foreach (var item in result)
+            //{
+            //    Console.WriteLine(item);
+            //}
+
+            ////Query Syntax
+            //var result02 = from p in ProductsList
+            //             group p by p.Category into categories
+            //             let total = categories.Sum(p => p.UnitsInStock)
+            //             select new
+            //             {
+            //                 categories.Key,
+            //                 UnitsInStock = total
+
+            //             };
+            //foreach (var item in result02)
             //{
             //    Console.WriteLine(item);
             //}
@@ -226,6 +243,77 @@ namespace Assignment
             //                 Category = categories.Key,
             //                 AvgPrice = AvgPrice
             //             };
+
+            //foreach (var item in result)
+            //{
+            //    Console.WriteLine(item);
+            //}
+
+            #endregion
+
+            #endregion
+
+            #region Part03 - Set Operators
+
+            #region P03|Q01 - Find the unique Category names from Product List
+
+            ////01
+            //var result = ProductsList.Union(ProductsList, new ProductStateComparer());
+
+            //foreach (var item in result)
+            //{
+            //    Console.WriteLine(item.Category);
+            //}
+
+            ////02
+            //var result02 = ProductsList.DistinctBy(p => p.Category);
+
+            //foreach (var item in result02)
+            //{
+            //    Console.WriteLine(item.Category);
+            //}
+
+            #endregion
+
+            #region P03|Q02 - Produce a Sequence containing the unique first letter from both product and customer names
+
+            //var productNames = ProductsList.Select(p => p.ProductName.ElementAt(0));
+            //var CustomerNames = CustomersList.Select(c => c.CustomerName.ElementAt(0));
+
+            //var result = productNames.Union(CustomerNames);
+
+            //Console.WriteLine(string.Join(", ", result));//C, A, G, U, N, M, I, Q, K, T, P, S, R, B, J, Z, V, F, E, W, L, O, D, H
+
+            #endregion
+
+            #region P03|Q03 - Create one sequence that contains the common first letter from both product and customer names.
+
+            //var productNames = ProductsList.Select(p => p.ProductName.ElementAt(0));
+            //var CustomerNames = CustomersList.Select(c => c.CustomerName.ElementAt(0));
+
+            //var result = productNames.Intersect(CustomerNames);
+
+            //Console.WriteLine(string.Join(", ", result));//C, A, G, N, M, I, Q, K, T, P, S, R, B, V, F, E, W, L, O
+
+            #endregion
+
+            #region P03|Q04 - Create one sequence that contains the first letters of product names that are not also first letters of customer names.
+
+            //var productNames = ProductsList.Select(p => p.ProductName.ElementAt(0));
+            //var CustomerNames = CustomersList.Select(c => c.CustomerName.ElementAt(0));
+
+            //var result = productNames.Except(CustomerNames);
+
+            //Console.WriteLine(string.Join(", ", result));//U, J, Z
+
+            #endregion
+
+            #region P03|Q05 - Create one sequence that contains the last Three Characters in each name of all customers and products, including any duplicates
+            
+            //var productNames = ProductsList.Select(p => p.ProductName.Substring(p.ProductName.Length - 3));
+            //var customerNames = CustomersList.Select(c => c.CustomerName.Substring(c.CustomerName.Length - 3));
+
+            //var result = productNames.Concat(customerNames);
 
             //foreach (var item in result)
             //{
