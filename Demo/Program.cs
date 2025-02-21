@@ -1445,6 +1445,163 @@ namespace Demo
 
             #endregion
 
+            #region Part 04 Quantifier Operators - Deferred Execution - Return Boolean - [Any() - All() - SequenceEqual()]
+
+            #region 01 - Any
+
+            #region 01.1 Any<T>()
+            ////Determine Whether a sequence contains any elements
+            ////Return Boolean value -> True if source sequence contains any elements, otherwise return False.
+
+            //var result = ProductsList.Any();
+            //Console.WriteLine(result);//True
+
+            #endregion
+
+            #region 01.2 Any<T>(Func<T,bool> predicate)
+            ////Determine Whether any element of a sequence satisfy a condition.
+            ////Return Boolean value ->
+            ////True => if source sequence is not empty and and at least one of its elements pass the predicate condition
+            ////otherwise return False [if there is no any element in sequence match the condition].
+
+            //var result = ProductsList.Any(product => product.UnitsInStock == 0);
+            //Console.WriteLine(result);//True
+
+            //result = ProductsList.Any(product => product.UnitsInStock > 1000);
+            //Console.WriteLine(result);//False [There is no products that units in stock of it > 1000].
+            #endregion
+
+            #endregion
+
+            #region 02 - All<T>(Func<T,bool> predicate)
+            //Determines whether all elements of a sequence satisfy a condition
+            //Return True if the sequence is empty or every element in the source sequence passes the predicate test 
+            //Otherwise Return False.
+
+            #region Example01 - If not all source sequence elements match the condition  Return "False"
+
+            //var result = ProductsList.All(product => product.UnitsInStock == 0);
+            //Console.WriteLine(result);//False 
+
+            #endregion
+
+            #region Example02 - If All Sequence elements pass the condition - Return "True"
+
+            //int[] nums = [2, 4, 6, 8, 10];
+
+            //var result = nums.All(num => num % 2 == 0);
+            //Console.WriteLine(result);//True [All Elements in the sequence pass the condition [num%2 == 0]].
+
+            #endregion
+
+            #region Example03 - If Sequence Is Empty - Return "True".
+
+            //List<int> nums = new List<int>();
+
+            //var result = nums.All(num => num % 2 == 0);
+            //Console.WriteLine(result);//True
+
+            #endregion
+
+            #endregion
+
+            #region 03 - SequenceEqual
+            //Determine Whether The 2 sequences have the same elements.
+
+            #region 01 SequenceEqual<T>(IEnumerable<T> second)
+            ///Determine Whether The 2 sequences have the same elements. by using the default equality comparer of the type.
+            ///Compare based on state/data => ValueType data types default comparer
+            ///Compare based on Reference/Address => ReferenceType data types default comparer
+            ///Return True if the 2 sequences have the same elements 
+            ///otherwise return False. 
+
+            #region Example01 - The 2 Sequences are of type valueType <int> - So The Comparing is based on state/Data to specify if the 2 objects are the same
+
+            ////01 - If The 2 sequences not equals in the length and state.
+            //List<int> seq01 = Enumerable.Range(0, 10).ToList();//0,1,2,3,4,5,6,7,8,9
+            //List<int> seq02 = Enumerable.Range(5, 10).ToList();//5,6,7,8,9,10,11,12,13,14
+
+            //var result = seq01.SequenceEqual(seq02);
+            //Console.WriteLine(result);//False
+
+
+            ////02 - If The 2 sequences equals in the length and state.
+            //List<int> seq01 = Enumerable.Range(0, 10).ToList();//0,1,2,3,4,5,6,7,8,9
+            //List<int> seq02 = Enumerable.Range(0, 10).ToList();//5,6,7,8,9,10,11,12,13,14
+
+            //var result = seq01.SequenceEqual(seq02);
+            //Console.WriteLine(result);//True
+
+            #endregion
+
+            #region Example02 - The 2 Sequences are of type ReferenceType <Product> - So The Comparing is based on Reference/Address to specify if the 2 objects are the same
+
+            //List<Product> products01 = new List<Product>()
+            //{
+            //    new Product(){ ProductID = 1, ProductName = "Chai", Category = "XYZ", UnitPrice = 100, UnitsInStock = 11},
+            //    new Product(){ ProductID = 2, ProductName = "Cheese", Category = "ABC", UnitPrice = 150, UnitsInStock = 20},
+            //    new Product(){ ProductID = 3, ProductName = "Panana", Category = "GTY", UnitPrice = 100, UnitsInStock = 140},
+            //    new Product(){ ProductID = 4, ProductName = "Cherry", Category = "CDE", UnitPrice = 100, UnitsInStock = 0}
+            //};
+
+            //List<Product> products02 = new List<Product>()
+            //{
+            //    new Product(){ ProductID = 1, ProductName = "Chai", Category = "XYZ", UnitPrice = 100, UnitsInStock = 11},
+            //    new Product(){ ProductID = 2, ProductName = "Cheese", Category = "ABC", UnitPrice = 150, UnitsInStock = 20},
+            //    new Product(){ ProductID = 3, ProductName = "Panana", Category = "GTY", UnitPrice = 100, UnitsInStock = 140},
+            //    new Product(){ ProductID = 4, ProductName = "Cherry", Category = "CDE", UnitPrice = 100, UnitsInStock = 0}
+            //};
+            ///The 2 sequences contain the objects with the same states but differenct Addresses in heap and the 2 sequences have the same length.
+            ///So now when use first overload of  SequenceEquals<T>(IEnumerable<T> second) that not take parameter of type IEquallityComparer<T> 
+            ///The Compare Equallity between objects will be based on the default Comparer of referenceTypes which is based on Address of objects
+            ///So the result of the SequenceEquals here will be False here.
+            ///because it found that objects in first sequence not like objects in second sequence based on Address.[But the objects have the same state].
+            ///
+
+            //var result = products01.SequenceEqual(products02);
+            //Console.WriteLine(result);//False
+
+            #endregion
+
+            #endregion
+
+            #region 02 SequenceEqual<T>(IEnumerable<T> second, IEquallityComparer<T>? comparer) - Return Bool value based on Specific EqualityComparer.
+
+            #region Example02 - The 2 Sequences are of type ReferenceType <Product> - and The Comparing will be based on specify EquallityComparer - Compare based on objectStates not references.
+
+            //List<Product> products01 = new List<Product>()
+            //{
+            //    new Product(){ ProductID = 1, ProductName = "Chai", Category = "XYZ", UnitPrice = 100, UnitsInStock = 11},
+            //    new Product(){ ProductID = 2, ProductName = "Cheese", Category = "ABC", UnitPrice = 150, UnitsInStock = 20},
+            //    new Product(){ ProductID = 3, ProductName = "Panana", Category = "GTY", UnitPrice = 100, UnitsInStock = 140},
+            //    new Product(){ ProductID = 4, ProductName = "Cherry", Category = "CDE", UnitPrice = 100, UnitsInStock = 0}
+            //};
+
+            //List<Product> products02 = new List<Product>()
+            //{
+            //    new Product(){ ProductID = 1, ProductName = "Chai", Category = "XYZ", UnitPrice = 100, UnitsInStock = 11},
+            //    new Product(){ ProductID = 2, ProductName = "Cheese", Category = "ABC", UnitPrice = 150, UnitsInStock = 20},
+            //    new Product(){ ProductID = 3, ProductName = "Panana", Category = "GTY", UnitPrice = 100, UnitsInStock = 140},
+            //    new Product(){ ProductID = 4, ProductName = "Cherry", Category = "CDE", UnitPrice = 100, UnitsInStock = 0}
+            //};
+            ///The 2 sequences contain the objects with the same states but difference Addresses in heap
+            ///So now when use Second overload of SequenceEqual<T>(IEnumerable<T> second, IEquallityComparer<T>? comparer) that take parameter of type IEquallityComparer<T> 
+            ///The Compare Equallity between objects will be based on the Specify Comparer of "IEquallityComparer<T>? comparer" which is based on State of objects
+            ///So the result of the SequenceEqual here will be Trur
+            ///because it found that objects in first sequence like objects in second sequence based on State Comparer.[But the objects have the Different Addresses].
+            ///
+
+            //var result = products01.SequenceEqual(products02, new ProductEqualityComparer());
+            //Console.WriteLine(result);//True
+    
+            #endregion
+
+            #endregion
+
+            #endregion
+
+            #endregion
+
         }
     }
 }
